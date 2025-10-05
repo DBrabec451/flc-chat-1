@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FLC Marketing Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+    h1 { text-align: center; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    input, textarea {
+      width: 100%;
+      margin-top: 5px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #0056b3; }
+    #output {
+      margin-top: 15px;
+      background-color: #f2f2f2;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FLC Marketing Chatbot</h1>
+    <form id="chat-form">
+      <label for="firstName">Your First Name</label>
+      <input id="firstName" required />
+
+      <label for="year">Year in School</label>
+      <input id="year" required />
+
+      <label for="major">Major</label>
+      <input id="major" required />
+
+      <label for="memory">Favorite Memory at Fort Lewis</label>
+      <textarea id="memory" rows="3" required></textarea>
+
+      <button type="submit">Generate My Paragraph</button>
+    </form>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    document.getElementById("chat-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const year = document.getElementById("year").value.trim();
+      const major = document.getElementById("major").value.trim();
+      const memory = document.getElementById("memory").value.trim();
+      const output = document.getElementById("output");
+
+      if (!firstName || !year || !major || !memory) {
+        output.innerHTML = "⚠️ Please fill in all fields.";
+        return;
+      }
+
+      // Generate a first-person marketing paragraph (no API needed)
+      const paragraph = `Hi, my name is ${firstName}, and I’m a ${year}-year student majoring in ${major} at Fort Lewis College. One of my favorite memories here was ${memory}. My experience at Fort Lewis has been transformative and full of opportunities to grow, learn, and connect.`;
+
+      output.innerHTML = paragraph;
+    });
+  </script>
+</body>
+</html>
