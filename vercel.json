@@ -1,11 +1,11 @@
 {
-  "routes": [
+  "headers": [
     {
-      "src": "/(.*)",
-      "headers": {
-        "X-Frame-Options": "ALLOWALL",
-        "Content-Security-Policy": "frame-ancestors https://fortlewis.qualtrics.com *;"
-      }
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "ALLOWALL" },
+        { "key": "Content-Security-Policy", "value": "frame-ancestors https://fortlewis.qualtrics.com *;" }
+      ]
     }
   ]
 }
