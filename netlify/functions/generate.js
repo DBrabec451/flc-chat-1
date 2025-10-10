@@ -6,6 +6,9 @@ const client = new OpenAI({
 
 export async function handler(event, context) {
   try {
+    // 🟡 Debug line — this helps confirm your key is actually loading
+    console.log("API Key loaded:", !!process.env.OPENAI_API_KEY);
+
     const { year, major, memory } = JSON.parse(event.body);
 
     const prompt = `
@@ -30,7 +33,7 @@ export async function handler(event, context) {
       body: JSON.stringify({ result }),
     };
   } catch (err) {
-    console.error(err);
+    console.error("Error in generate function:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message }),
