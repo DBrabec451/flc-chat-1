@@ -3,93 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FLC Marketing Chatbot</title>
+  <title>Fort Lewis College Story Generator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f9fafb;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
-    .container {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 400px;
+    .card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 90%;
     }
-    h1 { text-align: center; }
-    label { font-weight: bold; display: block; margin-top: 10px; }
+    h1 {
+      text-align: center;
+      color: #0076a8; /* FLC Blue */
+    }
     input, textarea {
       width: 100%;
-      margin-top: 5px;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      margin-bottom: 1rem;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
     }
     button {
       width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      background-color: #007bff;
+      padding: 0.8rem;
+      background-color: #0076a8;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
     }
-    button:hover { background-color: #0056b3; }
+    button:hover {
+      background-color: #005b80;
+    }
     #output {
-      margin-top: 15px;
-      background-color: #f2f2f2;
-      padding: 10px;
-      border-radius: 5px;
+      margin-top: 1rem;
+      background: #f0f4f8;
+      padding: 1rem;
+      border-radius: 8px;
       white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>FLC Marketing Chatbot</h1>
-    <form id="chat-form">
-      <label for="firstName">Your First Name</label>
-      <input id="firstName" required />
-
-      <label for="year">Year in School</label>
-      <input id="year" required />
-
-      <label for="major">Major</label>
-      <input id="major" required />
-
-      <label for="memory">Favorite Memory at Fort Lewis</label>
-      <textarea id="memory" rows="3" required></textarea>
-
-      <button type="submit">Generate My Paragraph</button>
-    </form>
+  <div class="card">
+    <h1>Fort Lewis College Story Generator</h1>
+    <input type="text" id="year" placeholder="Year in School" />
+    <input type="text" id="major" placeholder="Major" />
+    <textarea id="memory" placeholder="Favorite Memory at Fort Lewis"></textarea>
+    <button onclick="generateParagraph()">Generate My Paragraph</button>
     <div id="output"></div>
   </div>
 
   <script>
-    document.getElementById("chat-form").addEventListener("submit", (e) => {
-      e.preventDefault();
+    async function generateParagraph() {
+      const year = document.getElementById('year').value;
+      const major = document.getElementById('major').value;
+      const memory = document.getElementById('memory').value;
+      const output = document.getElementById('output');
 
-      const firstName = document.getElementById("firstName").value.trim();
-      const year = document.getElementById("year").value.trim();
-      const major = document.getElementById("major").value.trim();
-      const memory = document.getElementById("memory").value.trim();
-      const output = document.getElementById("output");
+      output.textContent = "✨ Thinking... please wait.";
 
-      if (!firstName || !year || !major || !memory) {
-        output.innerHTML = "⚠️ Please fill in all fields.";
-        return;
+      try {
+        const response = await fetch("/.netlify/functions/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ year, major, memory })
+        });
+
+        const data = await response.json();
+        output.textContent = data.result || "⚠️ Sorry, something went wrong.";
+      } catch (error) {
+        console.error(error);
+        output.textContent = "❌ Error: Unable to reach the server.";
       }
-
-      // Generate a first-person marketing paragraph (no API needed)
-      const paragraph = `Hi, my name is ${firstName}, and I’m a ${year}-year student majoring in ${major} at Fort Lewis College. One of my favorite memories here was ${memory}. My experience at Fort Lewis has been transformative and full of opportunities to grow, learn, and connect.`;
-
-      output.innerHTML = paragraph;
-    });
+    }
   </script>
 </body>
 </html>
